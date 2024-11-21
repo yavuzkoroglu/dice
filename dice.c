@@ -83,8 +83,8 @@ int main(int argc, char* argv[]) {
     }
 
     while (m--) {
-        unsigned i = n - 1;
-        while (i--) printf("%u ", RAND_DICE(a, b));
+        unsigned i = n;
+        while (--i) printf("%u ", RAND_DICE(a, b));
         printf("%u\n", RAND_DICE(a, b));
     }
 

@@ -69,7 +69,7 @@ int main(int argc, char* argv[]) {
     srand(s);
 
     if (a > b) {
-        fputs("\n ERROR: 'a' must be larger than 'b'\n\n", stderr);
+        fputs("\n ERROR: 'a' cannot be larger than 'b'\n\n", stderr);
         return EXIT_FAILURE;
     }
 

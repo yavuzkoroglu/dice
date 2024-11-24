@@ -6,16 +6,18 @@
 #include <time.h>
 
 #define DEF_ARG(x)      arg_##x = !strcmp(argv[arg_id], "-"#x)
-#define ERROR(fmt)      error("\n ERROR:"fmt"\n"USAGE_FMT, argv[0])
-#define ERROR2(fmt, x)  error("\n ERROR:"fmt"\n"USAGE_FMT, x, argv[0])
-#define RAND_DICE(a, b) ((unsigned)rand() % (b - a + 1) + a)
+#define ERROR(fmt)      error("\n ERROR: "fmt"\n"USAGE_FMT, argv[0])
+#define ERROR2(fmt, x)  error("\n ERROR: "fmt"\n"USAGE_FMT, x, argv[0])
 #define RAND_SEED       ((unsigned)clock() + (unsigned)time(NULL))
 #define REPEAT(n)       for (unsigned i = (unsigned)(n); i > 0; i--)
 #define SCAN_ARG(x)     (arg_##x && sscanf(argv[arg_id + 1], "%u", &x) != 1)
 #define USAGE_FMT       "\n Usage: %s [-a|b|m|n|s <positive-integer>]\n\n"
+#define WRAPS_PRINTF    __attribute__((format(printf, 1, 2)))
 
-__attribute__((format(printf, 1, 2)))
-static int error(char const* const restrict fmt, ...) {
+static WRAPS_PRINTF int error(char const* const restrict fmt, ...);
+static inline unsigned randDice(unsigned const a, unsigned const b);
+
+static WRAPS_PRINTF int error(char const* const restrict fmt, ...) {
     va_list args;
     assert(fmt != NULL);
     va_start(args, fmt);
@@ -46,9 +48,13 @@ int main(int argc, char* argv[]) {
 
     srand(s);
     while (m--) {
-        REPEAT(n-1) printf("%u ", RAND_DICE(a, b));
-        printf("%u\n", RAND_DICE(a, b));
+        REPEAT(n-1) printf("%u ", randDice(a, b));
+        printf("%u\n", randDice(a, b));
     }
 
     return EXIT_SUCCESS;
+}
+
+static inline unsigned randDice(unsigned const a, unsigned const b) {
+    return (unsigned)rand() % (b - a + 1) + a;
 }
